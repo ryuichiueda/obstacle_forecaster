@@ -17,9 +17,9 @@
 namespace obstacle_forecaster
 {
 
-class ForecastCore {
+class Forecaster {
 public:
-	ForecastCore();
+	Forecaster();
 	bool setMaskMap(nav_msgs::msg::OccupancyGrid &map);
 	/*
 protected: 

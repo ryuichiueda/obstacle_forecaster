@@ -11,8 +11,8 @@ find_package(ament_cmake_auto REQUIRED)
 ament_auto_find_build_dependencies()
 
 ament_auto_add_executable(forecaster
+  src/main.cpp
   src/forecaster.cpp
-  src/forecast_core.cpp
 )
 
 install(TARGETS forecaster DESTINATION lib/${PROJECT_NAME})

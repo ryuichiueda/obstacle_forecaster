@@ -21,11 +21,8 @@ private:
 	void timer_callback()
 	{
 		auto message = std_msgs::msg::Int16MultiArray();
-		std::ifstream ifs("/dev/rtlightsensor0");
-		int16_t value;
 		for(int i=0;i<4;i++){
-			ifs >> value;
-			message.data.push_back(value);
+			message.data.push_back(i);
 		}
 		publisher_->publish(message);
 	}

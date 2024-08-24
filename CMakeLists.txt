@@ -9,9 +9,10 @@ endif()
 find_package(ament_cmake_auto REQUIRED)
 
 ament_auto_find_build_dependencies()
-#find_package(ament_cmake REQUIRED)
-#find_package(rclcpp REQUIRED)
-#find_package(std_msgs REQUIRED)
+
+ament_auto_add_executable(emcl2_node
+  src/forcaster.cpp
+)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)

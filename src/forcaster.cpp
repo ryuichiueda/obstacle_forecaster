@@ -11,7 +11,7 @@ namespace obstacle_forcaster
 class Forcaster : public rclcpp::Node
 {
 public:
-	Forcaster() : Node("futureobs") 
+	Forcaster() : Node("forecaster") 
 	{
 		publisher_ = create_publisher<std_msgs::msg::Int16MultiArray>("futureobs", 10);
 		timer_ = create_wall_timer(100ms, std::bind(&Forcaster::timer_callback, this));

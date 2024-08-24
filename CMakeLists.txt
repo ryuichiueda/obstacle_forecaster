@@ -10,9 +10,11 @@ find_package(ament_cmake_auto REQUIRED)
 
 ament_auto_find_build_dependencies()
 
-ament_auto_add_executable(emcl2_node
+ament_auto_add_executable(forecaster
   src/forcaster.cpp
 )
+
+install(TARGETS forecaster DESTINATION lib/${PROJECT_NAME})
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)

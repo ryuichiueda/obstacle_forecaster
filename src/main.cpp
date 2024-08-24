@@ -4,11 +4,13 @@
 #include <std_msgs/msg/int16_multi_array.hpp>
 #include <sensor_msgs/msg/laser_scan.hpp>
 #include <nav_msgs/srv/get_map.hpp>
+#include "obstacle_forecaster/forecaster.h"
 
 using namespace std::chrono_literals;
 using sensor_msgs::msg::LaserScan;
+using rclcpp::FutureReturnCode;
 
-namespace obstacle_forcaster
+namespace obstacle_forecaster
 {
 
 class ForecasterNode : public rclcpp::Node
@@ -29,18 +31,12 @@ public:
 			auto req = std::make_shared<nav_msgs::srv::GetMap::Request>();
 			auto res = client->async_send_request(req);
 			
-			if (rclcpp::spin_until_future_complete(this->get_node_base_interface(), res) 
-					== rclcpp::FutureReturnCode::SUCCESS) {
-			/*
-				if (vi_->setMapWithOccupancyGrid(res.get()->map,
-					theta_cell_num, safety_radius, safety_radius_penalty,
-					goal_margin_radius, goal_margin_theta)) {
+			if (rclcpp::spin_until_future_complete(this->get_node_base_interface(), res) == FutureReturnCode::SUCCESS) {
+				if (forecaster_.setMaskMap(res.get()->map))
 					break;
-				}
-		*/
-			} else {
+			} else
 				RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Failed to call map service");
-			}
+
 			sleep(1);
 		}
 
@@ -55,6 +51,7 @@ private:
 	rclcpp::Publisher<std_msgs::msg::Int16MultiArray>::SharedPtr publisher_;
 	rclcpp::TimerBase::SharedPtr timer_;
 	rclcpp::Subscription<LaserScan>::SharedPtr scan_;
+	Forecaster forecaster_;
 
 	void receiveScan(const LaserScan::ConstSharedPtr msg)
 	{
@@ -75,7 +72,7 @@ private:
 int main(int argc, char* argv[])
 {
 	rclcpp::init(argc, argv);
-	rclcpp::spin(std::make_shared<obstacle_forcaster::ForecasterNode>());
+	rclcpp::spin(std::make_shared<obstacle_forecaster::ForecasterNode>());
 	rclcpp::shutdown();
 	return 0;
 }

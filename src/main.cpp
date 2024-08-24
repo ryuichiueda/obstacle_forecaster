@@ -25,17 +25,27 @@ private:
 	Forecaster forecaster_;
 
 	void receiveScan(const LaserScan::ConstSharedPtr msg);
-	void timer_callback();
+	void timerCallback();
+	void waitAndReadMaskMap(void);
 };
 
 ForecasterNode::ForecasterNode() : Node("forecaster") 
 {
+	waitAndReadMaskMap();
+	scan_ = create_subscription<LaserScan>(
+  		"scan", 2, std::bind(&ForecasterNode::receiveScan, this, std::placeholders::_1));
+
+	publisher_ = create_publisher<std_msgs::msg::Int16MultiArray>("futureobs", 10);
+	timer_ = create_wall_timer(100ms, std::bind(&ForecasterNode::timerCallback, this));
+}
+
+void ForecasterNode::waitAndReadMaskMap(void) {
 	while (true) {
 		auto client = create_client<nav_msgs::srv::GetMap>("/map_server/map");
 		while (!client->wait_for_service(1s)) {
 			if (!rclcpp::ok()) {
 				RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Interrupted while waiting for map.");
-				return;
+				exit(1);
 			}
 			RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "map server not available, waiting again...");
 		}
@@ -46,24 +56,20 @@ ForecasterNode::ForecasterNode() : Node("forecaster")
 		if (rclcpp::spin_until_future_complete(this->get_node_base_interface(), res) == FutureReturnCode::SUCCESS) {
 			if (forecaster_.setMaskMap(res.get()->map))
 				break;
-		} else
+		} else {
 			RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Failed to call map service");
+			exit(1);
+		}
 
 		sleep(1);
 	}
-
-	scan_ = create_subscription<LaserScan>(
-  		"scan", 2, std::bind(&ForecasterNode::receiveScan, this, std::placeholders::_1));
-
-	publisher_ = create_publisher<std_msgs::msg::Int16MultiArray>("futureobs", 10);
-	timer_ = create_wall_timer(100ms, std::bind(&ForecasterNode::timer_callback, this));
 }
 
 void ForecasterNode::receiveScan(const LaserScan::ConstSharedPtr msg)
 {
 }
 
-void ForecasterNode::timer_callback()
+void ForecasterNode::timerCallback()
 {
 	auto message = std_msgs::msg::Int16MultiArray();
 	for(int i=0;i<4;i++){

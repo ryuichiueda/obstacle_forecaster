@@ -1,4 +1,5 @@
 #include "obstacle_forecaster/forecaster.h"
+#include <rclcpp/rclcpp.hpp>
 
 namespace obstacle_forecaster {
 
@@ -7,11 +8,11 @@ Forecaster::Forecaster(){
 
 bool Forecaster::setMaskMap(nav_msgs::msg::OccupancyGrid &map)
 {
-	/*
 	if ( map.info.width <= 0 || map.info.height <= 0 || map.info.resolution < 0.0001 )
 		return false;
 
 	RCUTILS_LOG_INFO("SET MAP");
+	/*
 	cell_num_t_ = theta_cell_num;
 	goal_margin_radius_ = goal_margin_radius;
 	goal_margin_theta_ = goal_margin_theta;

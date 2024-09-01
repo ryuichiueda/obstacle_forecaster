@@ -3,7 +3,6 @@
 <launch>
     <node pkg="obstacle_forecaster" exec="forecaster" output="screen"/>
 
-	<!--<set_env name="map" value="$(find-pkg-share obstacle_forecaster)/map/turtle.yaml"/>-->
     <node pkg="nav2_map_server" exec="map_server">
         <param name="yaml_filename" value="$(find-pkg-share obstacle_forecaster)/map/turtle.yaml"/>
     </node>

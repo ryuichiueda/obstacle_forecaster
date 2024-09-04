@@ -67,6 +67,8 @@ void ForecasterNode::waitAndReadMaskMap(void) {
 
 void ForecasterNode::receiveScan(const LaserScan::ConstSharedPtr msg)
 {
+	//forecaster_->scanToMap(msg, x_, y_, yaw_);
+	forecaster_.scanToMap(msg);
 }
 
 void ForecasterNode::timerCallback()

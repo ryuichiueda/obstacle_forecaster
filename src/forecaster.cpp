@@ -11,7 +11,7 @@ bool Forecaster::setMaskMap(nav_msgs::msg::OccupancyGrid &map)
 	if ( map.info.width <= 0 || map.info.height <= 0 || map.info.resolution < 0.0001 )
 		return false;
 
-	RCUTILS_LOG_INFO("SET MAP");
+	RCUTILS_LOG_INFO("READ MAP");
 	/*
 	cell_num_t_ = theta_cell_num;
 	goal_margin_radius_ = goal_margin_radius;
@@ -36,6 +36,51 @@ bool Forecaster::setMaskMap(nav_msgs::msg::OccupancyGrid &map)
 
 	*/
 	return true;
+}
+
+
+//void scanToMap(const sensor_msgs::msg::LaserScan::ConstSharedPtr msg, double x, double y, double t)
+void Forecaster::scanToMap(const LaserScan::ConstSharedPtr msg)
+{
+	double start_angle = msg->angle_min;
+	/*
+	for(unsigned long int i=0; i<msg->ranges.size(); i++){
+		double a = t + msg->angle_increment*i + start_angle;
+
+		double lx = x + msg->ranges[i]*cos(a);
+		double ly = y + msg->ranges[i]*sin(a);
+        	int ix = (int)floor( (lx - map_origin_x_)/xy_resolution_ );
+        	int iy = (int)floor( (ly - map_origin_y_)/xy_resolution_ );
+
+		for(double d=0.1;d<=0.9;d+=0.1){
+			double half_lx = x + msg->ranges[i]*cos(a)*d;
+			double half_ly = y + msg->ranges[i]*sin(a)*d;
+	        	int half_ix = (int)floor( (half_lx - map_origin_x_)/xy_resolution_ );
+	        	int half_iy = (int)floor( (half_ly - map_origin_y_)/xy_resolution_ );
+	
+			if(not inLocalArea(half_ix, half_iy))
+				continue;
+			
+			for(int it=0;it<cell_num_t_;it++){
+				int index = toIndex(half_ix, half_iy, it);
+				states_[index].local_penalty_ /= 2;
+			}
+		}
+
+		for(int iix=ix-2;iix<=ix+2;iix++){
+			for(int iiy=iy-2;iiy<=iy+2;iiy++){
+
+				if(not inLocalArea(iix, iiy))
+					continue;
+
+				for(int it=0;it<cell_num_t_;it++){
+					int index = toIndex(iix, iiy, it);
+					states_[index].local_penalty_ = 2048 << prob_base_bit_;
+				}
+			}
+		}
+
+	}*/
 }
 
 }

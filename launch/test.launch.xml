@@ -12,7 +12,10 @@
     <node pkg="nav2_map_server" exec="map_server">
         <param name="yaml_filename" value="$(find-pkg-share obstacle_forecaster)/map/corridor.yaml"/>
     </node>
-    <node pkg="obstacle_forecaster" exec="forecaster" output="screen"/>
+
+    <node pkg="obstacle_forecaster" exec="forecaster" output="screen">
+        <param from="$(find-pkg-share obstacle_forecaster)/config/params.yaml" />
+    </node>
 
     <node pkg="nav2_lifecycle_manager" exec="lifecycle_manager" output="screen">
         <param name="autostart" value="True"/>

@@ -12,27 +12,28 @@ bool Forecaster::setMaskMap(nav_msgs::msg::OccupancyGrid &map)
 	if ( map.info.width <= 0 || map.info.height <= 0 || map.info.resolution < 0.0001 )
 		return false;
 
-	RCUTILS_LOG_INFO("READ MAP");
-
 	mask_map_.cell_num_x_ = map.info.width;
 	mask_map_.cell_num_y_ = map.info.height;
 
 	mask_map_.xy_resolution_ = map.info.resolution;
-	/*
-	t_resolution_ = 360/cell_num_t_;
-	RCUTILS_LOG_INFO("GLOBAL: %lf %lf", map.info.resolution, xy_resolution_);
 
-	map_origin_x_ = map.info.origin.position.x;
-	map_origin_y_ = map.info.origin.position.y;
-	map_origin_quat_ = map.info.origin.orientation;
+	mask_map_.origin_x_ = map.info.origin.position.x;
+	mask_map_.origin_y_ = map.info.origin.position.y;
 
-	RCUTILS_LOG_INFO("SET STATES START");
-	setState(map, safety_radius, safety_radius_penalty);
-	setStateTransition();
-	setSweepOrders();
-	RCUTILS_LOG_INFO("SET STATES END");
+	for(int i=0; i<mask_map_.cell_num_x_*mask_map_.cell_num_y_; i++) {
+		mask_map_.data_.push_back(map.data[i]);
+	}
 
-	*/
+	RCUTILS_LOG_INFO("READ MAP");
+	RCUTILS_LOG_INFO("RESOLUTION: %lf", mask_map_.xy_resolution_);
+
+	for(int y=0; y<mask_map_.cell_num_y_; y+=2) {
+		for(int x=0; x<mask_map_.cell_num_x_; x+=2) {
+			std::cerr << mask_map_.data_[x + (mask_map_.cell_num_y_ - y - 1)*mask_map_.cell_num_x_] << " ";
+		}
+		std::cerr << std::endl;
+	}
+
 	return true;
 }
 

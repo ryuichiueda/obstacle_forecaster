@@ -13,6 +13,7 @@ ament_auto_find_build_dependencies()
 ament_auto_add_executable(forecaster
   src/main.cpp
   src/forecaster.cpp
+  src/map.cpp
 )
 
 install(TARGETS forecaster DESTINATION lib/${PROJECT_NAME})

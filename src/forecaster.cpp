@@ -1,5 +1,6 @@
 #include "obstacle_forecaster/forecaster.h"
 #include <rclcpp/rclcpp.hpp>
+#include "obstacle_forecaster/map.h"
 
 namespace obstacle_forecaster {
 
@@ -12,15 +13,12 @@ bool Forecaster::setMaskMap(nav_msgs::msg::OccupancyGrid &map)
 		return false;
 
 	RCUTILS_LOG_INFO("READ MAP");
+
+	mask_map_.cell_num_x_ = map.info.width;
+	mask_map_.cell_num_y_ = map.info.height;
+
+	mask_map_.xy_resolution_ = map.info.resolution;
 	/*
-	cell_num_t_ = theta_cell_num;
-	goal_margin_radius_ = goal_margin_radius;
-	goal_margin_theta_ = goal_margin_theta;
-
-	cell_num_x_ = map.info.width;
-	cell_num_y_ = map.info.height;
-
-	xy_resolution_ = map.info.resolution;
 	t_resolution_ = 360/cell_num_t_;
 	RCUTILS_LOG_INFO("GLOBAL: %lf %lf", map.info.resolution, xy_resolution_);
 

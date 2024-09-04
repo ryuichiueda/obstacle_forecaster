@@ -1,8 +1,9 @@
-#ifndef FORECAST_CORE_
-#define FORECAST_CORE_
+#ifndef FORECAST_
+#define FORECAST_
 
 #include <nav_msgs/msg/occupancy_grid.hpp>
 #include <sensor_msgs/msg/laser_scan.hpp>
+#include "obstacle_forecaster/map.h"
 /*
 #include "Action.h"
 #include <std_msgs/msg/u_int32_multi_array.hpp>
@@ -26,6 +27,9 @@ public:
 	bool setMaskMap(nav_msgs::msg::OccupancyGrid &map);
 	//void scanToMap(const sensor_msgs::msg::LaserScan::ConstSharedPtr msg, double x, double y, double t)
 	void scanToMap(const LaserScan::ConstSharedPtr msg);
+
+private:
+	Map mask_map_;
 
 	/*
 protected: 

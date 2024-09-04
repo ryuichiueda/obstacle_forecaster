@@ -10,7 +10,7 @@
     <arg name="use_gui" default="true"/>
 
     <node pkg="nav2_map_server" exec="map_server">
-        <param name="yaml_filename" value="$(find-pkg-share obstacle_forecaster)/map/turtle.yaml"/>
+        <param name="yaml_filename" value="$(find-pkg-share obstacle_forecaster)/map/corridor.yaml"/>
     </node>
     <node pkg="obstacle_forecaster" exec="forecaster" output="screen"/>
 

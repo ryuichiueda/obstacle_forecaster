@@ -20,6 +20,7 @@ public:
 
 	Map makeBlankMap(void);
 	int xyToIndex(int x, int y);
+	void eprint(void);
 };
 
 }

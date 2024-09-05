@@ -1,4 +1,5 @@
 #include "obstacle_forecaster/map.h"
+#include <iostream>
 
 namespace obstacle_forecaster {
 
@@ -32,7 +33,17 @@ int Map::xyToIndex(int x, int y) {
 	return x + (cell_num_y_ - y - 1)*cell_num_x_;
 }
 
+void Map::eprint(void){
+	int step = cell_num_y_ / 30;
+	for(int y=0; y<cell_num_y_; y+=step) {
+		for(int x=0; x<cell_num_x_; x+=step) {
+			int index = xyToIndex(x, y);
+			if(index >= 0)
+				std::cerr << data_[index] << " ";
+		}
+		std::cerr << std::endl;
+	}
+}
 
 }
 
-//			std::cerr << mask_map_.data_[x + (mask_map_.cell_num_y_ - y - 1)*mask_map_.cell_num_x_] << " ";

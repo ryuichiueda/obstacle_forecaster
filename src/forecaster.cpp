@@ -27,6 +27,8 @@ bool Forecaster::setMaskMap(nav_msgs::msg::OccupancyGrid &map)
 	RCUTILS_LOG_INFO("READ MAP");
 	RCUTILS_LOG_INFO("RESOLUTION: %lf", mask_map_.xy_resolution_);
 
+	mask_map_.eprint();
+	/*
 	int step = mask_map_.cell_num_y_ / 30;
 	for(int y=0; y<mask_map_.cell_num_y_; y+=step) {
 		for(int x=0; x<mask_map_.cell_num_x_; x+=step) {
@@ -35,7 +37,7 @@ bool Forecaster::setMaskMap(nav_msgs::msg::OccupancyGrid &map)
 				std::cerr << mask_map_.data_[index] << " ";
 		}
 		std::cerr << std::endl;
-	}
+	}*/
 
 	return true;
 }

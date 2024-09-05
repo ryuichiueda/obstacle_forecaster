@@ -30,7 +30,7 @@ int Map::xyToIndex(int x, int y) {
 		return -10000;
 	}
 
-	return x + (cell_num_y_ - y - 1)*cell_num_x_;
+	return x + y*cell_num_x_;
 }
 
 void Map::eprint(void){

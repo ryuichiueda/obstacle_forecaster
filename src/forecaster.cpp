@@ -59,6 +59,8 @@ void Forecaster::scanToMap(const LaserScan::ConstSharedPtr msg)
         	int ix = (int)floor( (lx - m.origin_x_)/m.xy_resolution_ );
         	int iy = (int)floor( (ly - m.origin_y_)/m.xy_resolution_ );
 
+		iy = m.cell_num_y_ - iy - 1;
+
 		/*
 		std::cerr << "angle:" << a/3.141592*180 << " x:" << lx << " y:" << ly << std::endl;
 		std::cerr << "ix:" << ix << " iy:" << iy << std::endl;

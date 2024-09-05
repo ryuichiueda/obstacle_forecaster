@@ -34,6 +34,17 @@ int Map::xyToIndex(int x, int y) {
 }
 
 void Map::eprint(void){
+	for(int y=0; y<cell_num_y_; y++) {
+		for(int x=0; x<cell_num_x_; x++) {
+			int index = xyToIndex(x, y);
+			if(data_[index] >= 100)
+				std::cerr << "*";
+			else
+				std::cerr << "_";
+		}
+		std::cerr << std::endl;
+	}
+	/*
 	int step = cell_num_y_ / 30;
 	for(int y=0; y<cell_num_y_; y+=step) {
 		for(int x=0; x<cell_num_x_; x+=step) {
@@ -42,7 +53,7 @@ void Map::eprint(void){
 				std::cerr << data_[index] << " ";
 		}
 		std::cerr << std::endl;
-	}
+	}*/
 }
 
 }

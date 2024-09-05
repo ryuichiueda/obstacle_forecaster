@@ -19,6 +19,7 @@ public:
 	std::vector<int> data_;
 
 	Map makeBlankMap(void);
+	int xyToIndex(int x, int y);
 };
 
 }

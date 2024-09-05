@@ -30,7 +30,9 @@ bool Forecaster::setMaskMap(nav_msgs::msg::OccupancyGrid &map)
 	int step = mask_map_.cell_num_y_ / 30;
 	for(int y=0; y<mask_map_.cell_num_y_; y+=step) {
 		for(int x=0; x<mask_map_.cell_num_x_; x+=step) {
-			std::cerr << mask_map_.data_[x + (mask_map_.cell_num_y_ - y - 1)*mask_map_.cell_num_x_] << " ";
+			int index = mask_map_.xyToIndex(x, y);
+			if(index >= 0)
+				std::cerr << mask_map_.data_[index] << " ";
 		}
 		std::cerr << std::endl;
 	}
@@ -62,35 +64,12 @@ void Forecaster::scanToMap(const LaserScan::ConstSharedPtr msg)
         	int ix = (int)floor( (lx - m.origin_x_)/m.xy_resolution_ );
         	int iy = (int)floor( (ly - m.origin_y_)/m.xy_resolution_ );
 
-	/*
-		for(double d=0.1;d<=0.9;d+=0.1){
-			double half_lx = x + msg->ranges[i]*cos(a)*d;
-			double half_ly = y + msg->ranges[i]*sin(a)*d;
-	        	int half_ix = (int)floor( (half_lx - map_origin_x_)/xy_resolution_ );
-	        	int half_iy = (int)floor( (half_ly - map_origin_y_)/xy_resolution_ );
-	
-			if(not inLocalArea(half_ix, half_iy))
-				continue;
-			
-			for(int it=0;it<cell_num_t_;it++){
-				int index = toIndex(half_ix, half_iy, it);
-				states_[index].local_penalty_ /= 2;
-			}
-		}
+		int index = m.xyToIndex(ix, iy);
 
-		for(int iix=ix-2;iix<=ix+2;iix++){
-			for(int iiy=iy-2;iiy<=iy+2;iiy++){
+		if(index < 0)
+			continue;
 
-				if(not inLocalArea(iix, iiy))
-					continue;
-
-				for(int it=0;it<cell_num_t_;it++){
-					int index = toIndex(iix, iiy, it);
-					states_[index].local_penalty_ = 2048 << prob_base_bit_;
-				}
-			}
-		}*/
-
+		m.data_[index] = 255;
 	}
 }
 

@@ -21,4 +21,18 @@ Map Map::makeBlankMap(void)
 	return ret;
 }
 
+int Map::xyToIndex(int x, int y) {
+	if (x < 0 || x >= cell_num_x_) {
+		return -10000;
+	}
+	if (y < 0 || y >= cell_num_y_) {
+		return -10000;
+	}
+
+	return x + (cell_num_y_ - y - 1)*cell_num_x_;
 }
+
+
+}
+
+//			std::cerr << mask_map_.data_[x + (mask_map_.cell_num_y_ - y - 1)*mask_map_.cell_num_x_] << " ";

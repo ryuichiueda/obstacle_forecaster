@@ -34,7 +34,7 @@ ForecasterNode::ForecasterNode() : Node("forecaster")
 	declare_parameter("skip_cycle", 1);
 
 	int skip_cycle = get_parameter("skip_cycle").as_int();
-	std::cerr << "SKIP CYCLE: " << skip_cycle << std::endl;
+	forecaster_.setParam(skip_cycle);
 
 	waitAndReadMaskMap();
 	scan_ = create_subscription<LaserScan>(

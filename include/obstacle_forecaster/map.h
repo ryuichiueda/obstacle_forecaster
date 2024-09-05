@@ -17,6 +17,8 @@ public:
 	double origin_y_;
 
 	std::vector<int> data_;
+
+	Map makeBlankMap(void);
 };
 
 }

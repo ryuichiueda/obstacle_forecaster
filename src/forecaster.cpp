@@ -38,20 +38,31 @@ bool Forecaster::setMaskMap(nav_msgs::msg::OccupancyGrid &map)
 	return true;
 }
 
+void Forecaster::setParam(int skip_cycle) {
+	skip_cycle_ = skip_cycle;
+	std::cerr << "SKIP CYCLE: " << skip_cycle_ << std::endl;
+}
 
-//void scanToMap(const sensor_msgs::msg::LaserScan::ConstSharedPtr msg, double x, double y, double t)
 void Forecaster::scanToMap(const LaserScan::ConstSharedPtr msg)
 {
+	static uint64_t counter = 0;
+	if(counter%skip_cycle_ != 0) {
+		return;
+	}
+	counter++;
+
+	Map m = mask_map_.makeBlankMap();
+
 	double start_angle = msg->angle_min;
-	/*
 	for(unsigned long int i=0; i<msg->ranges.size(); i++){
-		double a = t + msg->angle_increment*i + start_angle;
+		double a = msg->angle_increment*i + start_angle;
 
-		double lx = x + msg->ranges[i]*cos(a);
-		double ly = y + msg->ranges[i]*sin(a);
-        	int ix = (int)floor( (lx - map_origin_x_)/xy_resolution_ );
-        	int iy = (int)floor( (ly - map_origin_y_)/xy_resolution_ );
+		double lx = msg->ranges[i]*cos(a);
+		double ly = msg->ranges[i]*sin(a);
+        	int ix = (int)floor( (lx - m.origin_x_)/m.xy_resolution_ );
+        	int iy = (int)floor( (ly - m.origin_y_)/m.xy_resolution_ );
 
+	/*
 		for(double d=0.1;d<=0.9;d+=0.1){
 			double half_lx = x + msg->ranges[i]*cos(a)*d;
 			double half_ly = y + msg->ranges[i]*sin(a)*d;
@@ -78,9 +89,9 @@ void Forecaster::scanToMap(const LaserScan::ConstSharedPtr msg)
 					states_[index].local_penalty_ = 2048 << prob_base_bit_;
 				}
 			}
-		}
+		}*/
 
-	}*/
+	}
 }
 
 }

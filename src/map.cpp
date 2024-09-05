@@ -16,7 +16,7 @@ Map Map::makeBlankMap(void)
 	ret.origin_x_ = origin_x_;
 	ret.origin_y_ = origin_y_;
 	
-	ret.data_ = std::vector<int>(data_.size());
+	ret.data_ = std::vector<int>(data_.size(), 0);
 
 	return ret;
 }
